@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text to speech</title>
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <link rel="stylesheet" href="mystyles.css">
+</head>
+<body>
+    <div class="main-container">
+            <div class="button-container">
+            <button class= "button" onclick="greeting()">Greetings!</button>
+            </div>
+            <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function speak(text, voice, rate, pitch, volume) {
+        //create a SpeechSynthesisUtterance to configure the how text to be spoken 
+            let speakData = new SpeechSynthesisUtterance("");
+            speakData.volume = volume; // From 0 to 1
+            speakData.rate = rate; // From 0.1 to 10
+            speakData.pitch = pitch; // From 0 to 2
+            speakData.text = text;
+            speakData.lang = 'en';
+            speakData.voice = voice;
+            speechSynthesis.speak(speakData);
+
+        }
+
+        function greeting(){
+            fetch("https://type.fit/api/quotes")
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                //0-1500
+                var a= Math.floor(Math.random() * 1500);
+                // console.log(data[a].text);
+                var b = data[a].text;
+                rate = 0.5; pitch = 1.5, volume = 1;
+                speak(b, undefined, rate, pitch, volume );
+                document.getElementById("result").innerHTML=b;
+            });
+
+        }
+        
+    </script>
+    
+</body>
+</html>
